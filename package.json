@@ -1,0 +1,18 @@
+{
+    "name": "fit-me-app",
+    "version": "1.0.0",
+    "description": "An app to track my fitness journey",
+    "scripts": {
+        "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+        "start:backend": "cd ./back-end & npm run dev",
+        "start:frontend": "cd ./front-end & npm run dev", 
+        "build": "cd ./front-end & npm run build",
+        "install:all": "npm install && npm run install:backend && npm run install:frontend",
+        "install:backend": "cd ./back-end & npm install",
+        "install:frontend": "cd ./front-end & npm install",
+        "cleanup": "Remove-Item node_modules -Recurse -Force -ErrorAction SilentlyContinue; Remove-Item back-end/node_modules -Recurse -Force -ErrorAction SilentlyContinue; Remove-Item front-end/node_modules -Recurse -Force -ErrorAction SilentlyContinue"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}
