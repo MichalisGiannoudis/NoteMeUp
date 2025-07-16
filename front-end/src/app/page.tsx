@@ -1,10 +1,8 @@
 import { SignIn } from "@/components/SignIn.component";
 
-export default function Home() {
+export default function HomePage() {
 
   return (
-    <div>
-      <SignIn />
-    </div>
+    <SignIn />
   );
 }
