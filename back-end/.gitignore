@@ -23,3 +23,6 @@ coverage/
 
 # VS Code
 .vscode/
+
+# SQLite database
+*.sqlite
