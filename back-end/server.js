@@ -1,9 +1,8 @@
-require('dotenv').config();
+import 'dotenv/config';
+import app from './src/app.js';
 
-const app = require('./src/app');
+const port = process.env.PORT || 3001;
 
-const PORT = process.env.PORT || 3001;
-
-app.listen(PORT, async () =>{
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Backend API Ready On Port: ${port}`);
 });
