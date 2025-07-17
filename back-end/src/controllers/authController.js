@@ -38,7 +38,12 @@ class AuthController {
   async getCurrentUser(req, res) {
     const defaultReturnObject = { authenticated: false, user: null };
     try {
-      const token = String(req.headers.authorization?.replace("Bearer ", ""));
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json(defaultReturnObject);
+      }
+      
+      const token = authHeader.replace("Bearer ", "");
       const user = await this.authService.getCurrentUser(token);
       res.status(200).json({ authenticated: true, user });
     } catch (err) {
@@ -46,6 +51,28 @@ class AuthController {
       res.status(400).json(defaultReturnObject);
     }
   }
+
+  async refreshToken(req, res) {
+  const defaultReturnObject = { authenticated: false };
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json(defaultReturnObject);
+    }
+    
+    const token = authHeader.replace("Bearer ", "");
+    const { newToken, user } = await this.authService.refreshToken(token);
+    
+    if (!newToken) {
+      return res.status(401).json(defaultReturnObject);
+    }
+    
+    res.status(200).json({ token: newToken, user });
+  } catch (err) {
+    console.error("POST auth/refresh, Something Went Wrong:", err);
+    res.status(401).json(defaultReturnObject);
+  }
+}
 }
 
 export default AuthController;
