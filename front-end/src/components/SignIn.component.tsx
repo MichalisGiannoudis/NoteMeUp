@@ -44,9 +44,7 @@ export const SignIn = () => {
     try {
       const result = await signIn(email, password);
       if (result.success) {
-        setTimeout(() => {
-          router.push('/dashboard');
-        }, 100);
+        router.push('/dashboard');
       } else {
         setLocalError(result.error || 'Sign-in failed. Please check your credentials.');
       }
