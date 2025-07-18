@@ -131,16 +131,7 @@ export const UserComponent = () => {
                                         <input type="tel" name="telephone" value={formData.telephone ?? ''} onChange={handleInputChange}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"/>
                                     </div>
-                                    
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Theme</label>
-                                        <select name="theme" value={formData.theme} onChange={handleInputChange}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600">
-                                            <option value="light">Light</option>
-                                            <option value="dark">Dark</option>
-                                        </select>
-                                    </div>
-                                
+
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
                                         <input type="text" name="address" value={formData.address} onChange={handleInputChange}
@@ -188,11 +179,6 @@ export const UserComponent = () => {
                                     <div>
                                         <h3 className="text-sm font-medium text-gray-500">Telephone</h3>
                                         <p className="mt-1 text-md ">{user.telephone || 'Not provided'}</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <h3 className="text-sm font-medium text-gray-500">Theme</h3>
-                                        <p className="mt-1 text-md capitalize">{user.theme || 'Light'}</p>
                                     </div>
 
                                     <div>
