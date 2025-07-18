@@ -3,21 +3,21 @@
 import { useRequireAuth } from "@/hooks/useRequireAuth.hook";
 import { useUpdateUser } from "@/hooks/useUpdateUser.hook";
 import { useState, useEffect } from "react";
-import Image from 'next/image';
 import { User } from "@/types/user";
 import { useTheme } from "@/context/ThemeContext";
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export const UserComponent = () => {
+    const router = useRouter();
     const { user, authenticated, isLoading } = useRequireAuth() as { user: User | null, authenticated: boolean, isLoading: boolean };
     const { updateUser, isLoading: isUpdating, error, success } = useUpdateUser();
     const { setTheme } = useTheme();
-    
     const [isEditing, setIsEditing] = useState(false);
-    
     const [formData, setFormData] = useState<Partial<User>>({
         firstname: '',
         lastname: '',
-        userName: '',
+        username: '',
         telephone: '',
         address: '',
         theme: 'light'
@@ -29,7 +29,7 @@ export const UserComponent = () => {
                 firstname: user.firstname,
                 lastname: user.lastname,
                 email: user.email,
-                userName: user.userName,
+                username: user.username,
                 telephone: user.telephone || '',
                 address: user.address || '',
                 theme: user.theme || 'light'
@@ -72,6 +72,7 @@ export const UserComponent = () => {
             <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row">
                     <div className="md:w-1/3 bg-blue-600 p-8 text-white">
+                            <Image src='/back-icon.png' onClick={() => router.push('/dashboard')} alt="BackButton" className="mb-4" width={30} height={30}/>
                         <div className="mb-6">
                             <div className="w-40 h-40 rounded-ful mx-auto flex items-center justify-center text-4xl font-bold">
                                 <Image src={`${user.profilePicture || '/dashboard/user-icon.png'}`} alt="UserIcon" width={100} height={100} className="rounded-full" />
@@ -122,7 +123,7 @@ export const UserComponent = () => {
                                     
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                                        <input type="text" name="userName" value={formData.userName} onChange={handleInputChange} 
+                                        <input type="text" name="userName" value={formData.username} onChange={handleInputChange} 
                                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600" required/>
                                     </div>
                                     
@@ -173,7 +174,7 @@ export const UserComponent = () => {
                                     
                                     <div>
                                         <h3 className="text-sm font-medium text-gray-500">Username</h3>
-                                        <p className="mt-1 text-md ">{user.userName}</p>
+                                        <p className="mt-1 text-md ">{user.username}</p>
                                     </div>
                                     
                                     <div>

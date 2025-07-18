@@ -2,7 +2,7 @@ export interface User {
     email: string;
     firstname: string;
     lastname: string;
-    userName: string;
+    username: string;
     address?: string;
     telephone?: string | null;
     theme?: 'light' | 'dark';
