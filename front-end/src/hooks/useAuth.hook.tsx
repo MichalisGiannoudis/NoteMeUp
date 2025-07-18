@@ -3,16 +3,21 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
+import { useTheme } from '@/context/ThemeContext';
 
 export function useAuth() {
   const { user, authenticated, isLoading, getAuthenticatedUser, signIn: authSignIn } = useAuthStore();
+  const { setTheme } = useTheme();
   const [isInitialized, setIsInitialized] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const initAuth = async () => {
       try {
-        await getAuthenticatedUser();
+        const { user } = await getAuthenticatedUser();
+        if (user?.theme) {
+          setTheme(user.theme as 'light' | 'dark');
+        }
       } catch (err) {
         setError('Failed to get authenticated user:' + err);
       } finally {
@@ -21,7 +26,7 @@ export function useAuth() {
     };
     
     initAuth();
-  }, [getAuthenticatedUser]);
+  }, [getAuthenticatedUser, setTheme]);
   
   const signIn = async (email: string, password: string) => {
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -43,7 +48,13 @@ export function useAuth() {
         return { success: false, error: errorMsg };
       }
       
-      authSignIn(response.data.token, response.data.user || { email });
+      const userData = response.data.user || { email };
+      authSignIn(response.data.token, userData);
+
+      if (userData.theme) {
+        setTheme(userData.theme as 'light' | 'dark');
+      }
+      
       return { success: true };
       
     } catch (err: any) {

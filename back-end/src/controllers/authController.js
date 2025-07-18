@@ -1,4 +1,4 @@
-import AuthService from "../services/authServices.js";
+import AuthService from "../services/authServicesMongo.js";
 
 class AuthController {
   constructor() {
@@ -7,12 +7,23 @@ class AuthController {
 
   async signup(req, res) {
     try {
-      const { email, password, firstname, lastname } = req.body;
-      if (!email || !password || !firstname || !lastname) {
-        res.status(400).end();
+      const { email, password, firstname, lastname, username, address, telephone, theme, profilePicture } = req.body;
+      if (!email || !password || !firstname || !lastname || !username) {
+        res.status(400).json({ error: true, message: "Missing required fields" });
         return;
       }
-      const { user, token } = await this.authService.signup({ email, password, firstname, lastname,});
+      const userData = { 
+        email, 
+        password, 
+        firstname, 
+        lastname, 
+        username,
+        address: address || null,
+        telephone: telephone || null,
+        theme: theme || 'light',
+        profilePicture: profilePicture || null
+      };
+      const { user, token } = await this.authService.signup(userData);
       res.send({ user, token });
     } catch (err) {
       console.error("POST auth/signup, Something Went Wrong:", err);
@@ -73,6 +84,34 @@ class AuthController {
     res.status(401).json(defaultReturnObject);
   }
 }
+
+async updateUser(req, res) {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: true, message: "Unauthorized" });
+      }
+      
+      const token = authHeader.replace("Bearer ", "");
+      const { email, firstname, lastname, username, address, telephone, theme, profilePicture } = req.body;
+      
+      const updatedUser = await this.authService.updateUser(token, { 
+        email, 
+        firstname, 
+        lastname, 
+        username, 
+        address, 
+        telephone, 
+        theme, 
+        profilePicture 
+      });
+      
+      res.status(200).json({ success: true, user: updatedUser });
+    } catch (err) {
+      console.error("PUT auth/update, Something Went Wrong:", err);
+      res.status(400).json({ error: true, message: err.message });
+    }
+  }
 }
 
 export default AuthController;

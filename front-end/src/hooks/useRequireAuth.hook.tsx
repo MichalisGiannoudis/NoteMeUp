@@ -3,23 +3,28 @@
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useRouter } from 'next/navigation';
+import { useTheme } from '@/context/ThemeContext';
 
 export function useRequireAuth() {
   const { user, authenticated, isLoading, getAuthenticatedUser } = useAuthStore();
+  const { setTheme } = useTheme();
   const [isInitialized, setIsInitialized] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const initAuth = async () => {
       try {
-        await getAuthenticatedUser();
+        const { user } = await getAuthenticatedUser();
+        if (user?.theme) {
+          setTheme(user.theme as 'light' | 'dark');
+        }
       } finally {
         setIsInitialized(true);
       }
     };
     
     initAuth();
-  }, [getAuthenticatedUser]);
+  }, [getAuthenticatedUser, setTheme]);
 
   useEffect(() => {
     if (isLoading || !isInitialized) return;

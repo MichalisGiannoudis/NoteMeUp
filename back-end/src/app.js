@@ -2,7 +2,7 @@ import express from 'express';
 import authRoutes from './routes/authRoutes.js';
 import cors from 'cors';
 import helmet from 'helmet';
-import { initDatabase } from './database/database.js';
+import { initDatabase } from './database/mongodb.js';
 
 const app = express();
 

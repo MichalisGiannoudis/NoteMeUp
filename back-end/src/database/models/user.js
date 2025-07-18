@@ -27,6 +27,28 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  address: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  telephone: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  theme: {
+    type: DataTypes.ENUM('light', 'dark'),
+    allowNull: true,
+    defaultValue: 'light',
+  },
+  profilePicture: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 }, {
   tableName: 'users',
   timestamps: true,
