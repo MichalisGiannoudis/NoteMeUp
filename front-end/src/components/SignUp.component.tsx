@@ -13,13 +13,14 @@ export const SignUp = () => {
   const [password, setPassword] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
+  const [username, setUsername] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const signUp = async () => {
-    if (!email || !password || !firstname || !lastname) {
+    if (!email || !password || !firstname || !lastname || !username) {
       setError('All fields are required');
       return;
     }
@@ -31,7 +32,7 @@ export const SignUp = () => {
       const response = await axios({
         method: 'POST',
         url: `${API_URL}/auth/signup`,
-        data: { email, password, firstname, lastname }
+        data: { email, password, firstname, lastname, username },
       });
       
       const { token, user } = response?.data || {};
@@ -70,23 +71,30 @@ export const SignUp = () => {
                       <input 
                         type="email" 
                         placeholder="Email" 
-                        className="text-xl border border-black rounded-lg p-2 w-40 h-7 md:w-80 md:h-10 focus:outline-none focus:ring-1 focus:ring-black mb-2 md:mb-4" 
+                        className="text-xl border border-black rounded-lg p-2 w-40 h-7 md:w-104 md:h-10 focus:outline-none focus:ring-1 focus:ring-black mb-2 md:mb-4" 
                         onChange={(e) => setEmail(e.target.value)} />
                       <input 
                         type="password" 
                         placeholder="Password" 
-                        className="text-xl border border-black rounded-lg p-2 w-40 h-7 md:w-80 md:h-10 focus:outline-none focus:ring-1 focus:ring-black mb-2 md:mb-4" 
+                        className="text-xl border border-black rounded-lg p-2 w-40 h-7 md:w-104 md:h-10 focus:outline-none focus:ring-1 focus:ring-black mb-2 md:mb-4" 
                         onChange={(e) => setPassword(e.target.value)} />
+                      <div className='flex flex-col md:flex-row gap-4'>
+                        <input 
+                          type="text" 
+                          placeholder="First Name" 
+                          className="text-xl border border-black rounded-lg p-2 w-40 h-7 md:w-50 md:h-10 focus:outline-none focus:ring-1 focus:ring-black mb-2 md:mb-4" 
+                          onChange={(e) => setFirstname(e.target.value)} />
+                        <input 
+                          type="text" 
+                          placeholder="Last Name" 
+                          className="text-xl border border-black rounded-lg p-2 w-40 h-7 md:w-50 md:h-10 focus:outline-none focus:ring-1 focus:ring-black mb-4 md:mb-6" 
+                          onChange={(e) => setLastname(e.target.value)} />
+                        </div>
                       <input 
-                        type="text" 
-                        placeholder="First Name" 
-                        className="text-xl border border-black rounded-lg p-2 w-40 h-7 md:w-80 md:h-10 focus:outline-none focus:ring-1 focus:ring-black mb-2 md:mb-4" 
-                        onChange={(e) => setFirstname(e.target.value)} />
-                      <input 
-                        type="text" 
-                        placeholder="Last Name" 
-                        className="text-xl border border-black rounded-lg p-2 w-40 h-7 md:w-80 md:h-10 focus:outline-none focus:ring-1 focus:ring-black mb-4 md:mb-6" 
-                        onChange={(e) => setLastname(e.target.value)} />
+                        type="username" 
+                        placeholder="User Name" 
+                        className="text-xl border border-black rounded-lg p-2 w-40 h-7 md:w-104 md:h-10 focus:outline-none focus:ring-1 focus:ring-black mb-2 md:mb-4" 
+                        onChange={(e) => setUsername(e.target.value)} />
                       <div className='flex flex-row gap-2'>
                         <button 
                           onClick={signUp} 
