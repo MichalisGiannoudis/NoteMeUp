@@ -1,57 +1,83 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../database.js';
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
-const User = sequelize.define('User', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
+const userSchema = new mongoose.Schema({
   email: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
     unique: true,
-    validate: {
-      isEmail: true,
-    },
+    trim: true,
+    lowercase: true,
+    match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email address']
   },
   password: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true
   },
   firstname: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
+    trim: true
   },
   lastname: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
+    trim: true
   },
   username: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
     unique: true,
+    trim: true
   },
   address: {
-    type: DataTypes.STRING,
-    allowNull: true,
+    type: String,
+    trim: true
   },
   telephone: {
-    type: DataTypes.STRING,
-    allowNull: true,
+    type: String,
+    trim: true
   },
   theme: {
-    type: DataTypes.ENUM('light', 'dark'),
-    allowNull: true,
-    defaultValue: 'light',
+    type: String,
+    enum: ['light', 'dark'],
+    default: 'light'
   },
   profilePicture: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
+    type: String
+  }
 }, {
-  tableName: 'users',
-  timestamps: true,
+  timestamps: true
 });
 
-export { User };
+userSchema.methods.comparePassword = async function(candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
+
+userSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next();
+  
+  try {
+    const salt = await bcrypt.genSalt(8);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+userSchema.virtual('fullName').get(function() {
+  return `${this.firstname} ${this.lastname}`;
+});
+
+userSchema.set('toJSON', {
+  virtuals: true,
+  transform: function(doc, ret) {
+    delete ret.password;
+    return ret;
+  }
+});
+
+const User = mongoose.model('User', userSchema);
+
+export default User;

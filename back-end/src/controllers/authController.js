@@ -1,4 +1,4 @@
-import AuthService from "../services/authServicesMongo.js";
+import AuthService from "../services/authServices.js";
 
 class AuthController {
   constructor() {
