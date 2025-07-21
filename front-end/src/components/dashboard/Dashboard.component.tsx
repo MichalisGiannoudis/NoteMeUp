@@ -36,26 +36,7 @@ export const Dashboard = () => {
     <div className="flex h-screen bg-background">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header user={user} />
-        
-        <div className="p-4 flex items-center gap-2 mb-2">
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" onClick={() => addNewWidget('tasks')}>
-            Add Tasks
-          </button>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" onClick={() => addNewWidget('stats')}>
-            Add Stats
-          </button>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" onClick={() => addNewWidget('notification')}>
-            Add Notification
-          </button>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" onClick={() => addNewWidget('barChart')}>
-            Add Bar Chart
-          </button>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" onClick={() => addNewWidget('performanceChart')}>
-            Add Performance
-          </button>
-        </div>
-        
+        <Header user={user} />     
         <div className="flex-1 overflow-auto">
           <ResponsiveGridLayout 
             className="layout" 

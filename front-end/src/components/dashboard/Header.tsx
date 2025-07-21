@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useUpdateUser } from "@/hooks/useUpdateUser.hook";
+import { useWidgets } from '@/hooks/widgets/useWidgets.hook';
 
 type HeaderProps = {
   user: User | null;
@@ -21,6 +22,16 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
   const router = useRouter();
   const { logout } = useAuthStore();
   const [, setUpdateTrigger] = useState(0);
+  const { addNewWidget } = useWidgets();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const widgetOptions = [
+    { label: "Tasks", value: "tasks" },
+    { label: "Stats", value: "stats" },
+    { label: "Notification", value: "notification" },
+    { label: "Bar Chart", value: "barChart" },
+    { label: "Performance Chart", value: "performanceChart" },
+  ];
+  const [widgetType, setWidgetType] = useState<string | null>(null);
 
   useEffect(() => {
     if (Date.now() - lastThemeChange < cooldownTime) {
@@ -33,6 +44,12 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
       return () => clearInterval(interval);
     }
   }, [lastThemeChange, cooldownTime]);
+
+  const handleDropdownSelect = (type: string) => {
+    setWidgetType(type);
+    setShowDropdown(false);
+    addNewWidget(type);
+  };
 
   const handleThemeToggle = () => {
     const now = Date.now();
@@ -64,8 +81,24 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
           <p className="text-xs text-foreground/60 cursor-default">{currentDate}</p>
         </div>
       </div>
-      
-      <div className="flex items-center">        
+
+      <div className="flex items-center">
+        <div className="flex items-center">
+          <div className="flex items-center mr-8" onClick={() => setShowDropdown((prev) => !prev)}>
+            <Image src="/dashboard/plus-icon.png" alt="Logo" width={30} height={30} className="cursor-pointer" />    
+              {showDropdown && ( 
+                <div className="absolute z-50 mt-2 bg-white border rounded shadow-lg top-12">
+                  {widgetOptions.map(opt => (
+                    <div key={opt.value} className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleDropdownSelect(opt.value)}>
+                      {opt.label}
+                    </div>
+                ))}
+              </div>
+            )}
+            <span className="ml-2 text-lg font-bold text-foreground cursor-pointer">Add Widget</span>
+          </div>
+        </div>
+
         <div className="flex items-center mr-4 relative">
           <button onClick={handleThemeToggle} 
             className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors duration-300 focus:outline-none ${
