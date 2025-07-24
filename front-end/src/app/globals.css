@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Define custom properties for light/dark */
 :root {
   --background: #f7fafc; /* gray-100 */
   --foreground: #1a202c; /* gray-800 */
