@@ -1,10 +1,10 @@
 import NotificationService from "../services/notificationServices.js";
 import AuthenticationService from "../services/authenticationServices.js";
 
-class widgetController{
+class WidgetController{
     constructor() {
         this.notificationService = new NotificationService();
-        this.authenticationService = this.AuthenticationService();
+        this.authenticationService = new AuthenticationService();
     }
 
     async getNotifications(req, res) {
@@ -20,12 +20,13 @@ class widgetController{
                 return res.status(401).json({ error: true, message: "Unauthorized" });
             }
 
-            const notifications = await this.notificationService.getNotifications(user.id);
-            res.status(200).json(notifications);
-
-        } catch (err) {
-            console.error("GET widget/getNotifications, Something Went Wrong:", err);
-            return res.status(400).send({ error: true, message: err.message });
+            const notifications = await this.notificationService.getNotifications(user._id);
+                
+            return res.status(200).json({success: true, user: user, notifications: notifications});
+        }
+        catch (error) {
+            console.error("GET widget/getNotifications, Something Went Wrong:", error);
+            return res.status(400).json({ error: true, message: error.message });
         }
     }
 
@@ -64,4 +65,4 @@ class widgetController{
     }
 }
 
-export default widgetController;
+export default WidgetController;
