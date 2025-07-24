@@ -1,8 +1,9 @@
 import express from 'express';
 import authRoutes from './routes/authRoutes.js';
+import widgetRoutes from './routes/widgetsRoutes.js';
+import { initDatabase } from './database/mongodb.js';
 import cors from 'cors';
 import helmet from 'helmet';
-import { initDatabase } from './database/mongodb.js';
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Protection']
 }));
+
 app.use(authRoutes);
+app.use(widgetRoutes);
 
 export default app;

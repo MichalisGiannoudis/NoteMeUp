@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken";
-import User from "../database/models/user.js";
+import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 
 const getJwtSecret = () => process.env.JWT_SECRET || 'your-secret-key';
 const getJwtExpiresIn = () => process.env.JWT_EXPIRES_IN || '24h';
 
-export default class AuthService {
+export default class AuthenticationService {
 
   async signup(signupRequest) {
     const { email, password, firstname, lastname, username, address, telephone, theme, profilePicture } = signupRequest;

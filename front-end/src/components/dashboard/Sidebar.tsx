@@ -6,7 +6,7 @@ import Image from 'next/image';
 export const Sidebar: React.FC = () => {
 
   return (
-    <div className="h-screen w-64 flex flex-col shadow-lg">
+    <div className="bg-card-bg text-card-fg h-screen w-64 flex flex-col shadow-lg">
       <div className="p-4 border-b flex justify-ce items-center gap-2">
         <Image src="/dashboard/logo.png" alt="Logo" width={40} height={40} className="object-cover" />
         <span className="font-bold text-lg">Note Me Up</span>

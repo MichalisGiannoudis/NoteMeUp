@@ -1,6 +1,6 @@
 'use client';
 
-import { useRequireAuth } from "@/hooks/useRequireAuth.hook";
+import { useRequireAuth } from "@/hooks/auth/useRequireAuth.hook";
 import { useUpdateUser } from "@/hooks/user/useUpdateUser.hook";
 import { useState, useEffect } from "react";
 import { User } from "@/types/user";
