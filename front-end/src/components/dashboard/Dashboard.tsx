@@ -16,7 +16,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 export const Dashboard = () => {
   const { user, authenticated, isLoading } = useRequireAuth() as { user: User | null, authenticated: boolean, isLoading: boolean };
-  const { layouts, widgets, addNewWidget, removeWidget, onLayoutChange } = useWidgets();
+  const { layouts, widgets, removeWidget, onLayoutChange } = useWidgets();
   
   if (isLoading) {
     return (
@@ -33,7 +33,7 @@ export const Dashboard = () => {
   }
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header user={user} />     
@@ -51,7 +51,7 @@ export const Dashboard = () => {
             margin={[16, 16]}>
             {Object.entries(widgets).map(([type, isVisible]) => (
               isVisible && (
-                <div key={type}>
+                <div key={type} className="bg-card-bg text-card-fg rounded-lg border border-opacity-20">
                   <Widget type={type} removeWidget={removeWidget} tasks={taskData}/>
                 </div>
               )
