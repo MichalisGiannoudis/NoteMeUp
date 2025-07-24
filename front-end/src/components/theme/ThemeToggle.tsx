@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
-import { useUpdateUser } from '@/hooks/useUpdateUser.hook';
+import { useUpdateUser } from '@/hooks/user/useUpdateUser.hook';
 import { User } from '@/types/user';
 
 export const ThemeButton = ({ user }: {user: User | null}) => {

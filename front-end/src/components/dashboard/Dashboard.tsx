@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useRequireAuth } from '../../hooks/useRequireAuth.hook';
+import { useRequireAuth } from '../../hooks/auth/useRequireAuth.hook';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { User } from '@/types/user';
 import { Sidebar } from './Sidebar';
