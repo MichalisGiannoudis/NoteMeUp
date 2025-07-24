@@ -1,7 +1,7 @@
 {
-    "name": "fit-me-app",
+    "name": "note-me-up",
     "version": "1.0.0",
-    "description": "An app to track my fitness journey",
+    "description": "An app to track your notes and ideas.",
     "scripts": {
         "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
         "start:backend": "cd ./back-end & npm run dev",
