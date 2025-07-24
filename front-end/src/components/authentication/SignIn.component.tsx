@@ -69,21 +69,11 @@ export const SignIn = () => {
                 {localError || error}
               </div>
             )}
-            <input 
-              type="email" 
-              placeholder="Email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="text-xl border border-black rounded-lg p-2 w-40 h-7 md:w-80 md:h-10 focus:outline-none focus:ring-1 focus:ring-black"/>
-            <input 
-              type="password" 
-              placeholder="Password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="text-xl border border-black rounded-lg p-2 w-40 h-7 md:w-80 md:h-10 focus:outline-none focus:ring-1 focus:ring-black"/>
-            <button 
-              onClick={handleSignIn} 
-              disabled={isSubmitting} 
+            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}
+              className="text-black text-xl border border-black rounded-lg p-2 w-40 h-7 md:w-80 md:h-10 focus:outline-none focus:ring-1 focus:ring-black"/>
+            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}
+              className="text-black text-xl border border-black rounded-lg p-2 w-40 h-7 md:w-80 md:h-10 focus:outline-none focus:ring-1 focus:ring-black"/>
+            <button onClick={handleSignIn} disabled={isSubmitting} 
               className="text-xl bg-black text-white rounded-lg p-2 w-40 md:w-80 hover:bg-gray-800 transition duration-200 mt-4 md:mt-6"> 
               {isSubmitting ? 'Signing In...' : 'Sign In'}
             </button>
