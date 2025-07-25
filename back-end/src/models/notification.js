@@ -1,6 +1,12 @@
 import mongoose from 'mongoose';
 
 const notificationSchema = new mongoose.Schema({
+  id : {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true
+  },
   type: {
     type: String,
     required: true,

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '../../store/authStore';
+import { useDashboardStore } from '@/store/dashboardStore';
 import { useRouter } from 'next/navigation';
 import { useTheme } from '@/context/ThemeContext';
 
@@ -10,6 +11,7 @@ export function useRequireAuth() {
   const { setTheme } = useTheme();
   const [isInitialized, setIsInitialized] = useState(false);
   const router = useRouter();
+  const { fetchAllDashboardData } = useDashboardStore();
 
   useEffect(() => {
     const initAuth = async () => {
@@ -31,8 +33,10 @@ export function useRequireAuth() {
     
     if (!authenticated) {
       router.push('/');
+    } else {
+      fetchAllDashboardData();
     }
-  }, [isLoading, authenticated, router, isInitialized]);
+  }, [isLoading, authenticated, router, isInitialized, fetchAllDashboardData]);
 
   return { 
     user, 

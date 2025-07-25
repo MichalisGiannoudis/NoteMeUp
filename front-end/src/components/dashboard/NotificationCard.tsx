@@ -1,25 +1,31 @@
 'use client'
 
-import { useNotifications } from '@/hooks/widgets/useNotifications.hook';
 import React, { useState, useEffect} from 'react';
 import { Notification } from '@/types/notification';
+import { useRouter } from 'next/navigation';
+import { useDashboardStore } from '@/store/dashboardStore';
 
 export const NotificationCard = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const router = useRouter();
   const [currentNotification, setCurrentNotification] = useState<Notification | null>(null);
-  const { isLoading, error, getNotifications } = useNotifications();
+  const notifications = useDashboardStore(state => state.notifications);
+  const isLoading = useDashboardStore(state => state.isLoading);
+  const error = useDashboardStore(state => state.error);
+  const fetchNotifications = useDashboardStore(state => state.fetchNotifications);
 
   useEffect(() => {
-    fetchNotifications();
-  }, []);
-
-  const fetchNotifications = async () => {
-    const fetchedNotifications = await getNotifications();
-    if (fetchedNotifications && fetchedNotifications.length > 0) {
-      setNotifications(fetchedNotifications);
-      setCurrentNotification(fetchedNotifications[0]);
+    if (notifications.length === 0) {
+      fetchNotifications();
+    } else if (notifications.length > 0 && !currentNotification) {
+      setCurrentNotification(notifications[0]);
     }
-  };
+  }, [notifications, fetchNotifications]);
+
+  useEffect(() => {
+    if (notifications.length > 0 && !currentNotification) {
+      setCurrentNotification(notifications[0]);
+    }
+  }, [notifications, currentNotification]);
 
   if ((!currentNotification && !error) || (isLoading && notifications.length === 0)) {
     return (
@@ -47,10 +53,21 @@ export const NotificationCard = () => {
 
   const getNotificationIcon = (type: string) => {
     switch (type.toLowerCase()) {
+      case 'error':
+        return (
+        <svg className="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        );
       case 'warning':
+        return (
+        <svg className="h-6 w-6 text-amber-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        );
       case 'alert':
         return (
-          <svg className="h-6 w-6 text-amber-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="h-6 w-6 text-amber-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
         );
@@ -96,7 +113,7 @@ export const NotificationCard = () => {
           </div>
           <div className="flex justify-between items-center">
             <p className="text-card-muted"> {currentNotification?.message || "No message available"} </p>
-            <button className="bg-blue-600 text-white text-sm px-3 py-1 rounded-md hover:bg-blue-700 transition-colors mr-5"> View Detail </button>
+            <button onClick={() => router.push('/notifications')} className="bg-blue-600 text-white text-sm px-3 py-1 rounded-md hover:bg-blue-700 transition-colors mr-5"> View Detail </button>
           </div>
         </div>
       </div>
