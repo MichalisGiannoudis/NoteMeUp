@@ -45,7 +45,6 @@ export const NotificationCard = () => {
     );
   }
 
-  // Function to determine icon based on notification type
   const getNotificationIcon = (type: string) => {
     switch (type.toLowerCase()) {
       case 'warning':
@@ -77,35 +76,30 @@ export const NotificationCard = () => {
   };
 
   return (
-    <div className="bg-card-bg rounded-lg p-4 shadow-md mb-4">
-      <div className="flex items-start">
+    <div className="bg-card-bg rounded-lg h-25">
+      <div className="flex items-start py-5">
         <div className="p-2 bg-background rounded-full mr-3">
           {currentNotification && getNotificationIcon(currentNotification.type)}
         </div>
-        <div className="flex-grow">
-          <h3 className="font-bold text-card-fg capitalize">
-            {currentNotification?.type || "Notification"}
-          </h3>
-          <p className="text-card-muted">
-            {currentNotification?.message || "No message available"}
-          </p>
-          {currentNotification?.targetGroup && (
-            <span className="text-xs text-card-muted mt-1 block">
-              Group: {currentNotification.targetGroup}
-            </span>
-          )}
+        <div className="flex flex-grow flex-col gap-2">
+          <div className="flex justify-between items-center">
+            <h3 className="font-bold text-card-fg capitalize">
+              {currentNotification?.type || "Notification"}
+            </h3>
+            {notifications.length > 1 && (
+              <div className="text-right mr-5">
+                <span className="text-sm text-card-muted">
+                  {notifications.length - 1} more notification{notifications.length > 2 ? 's' : ''}
+                </span>
+            </div>
+            )}
+          </div>
+          <div className="flex justify-between items-center">
+            <p className="text-card-muted"> {currentNotification?.message || "No message available"} </p>
+            <button className="bg-blue-600 text-white text-sm px-3 py-1 rounded-md hover:bg-blue-700 transition-colors mr-5"> View Detail </button>
+          </div>
         </div>
-        <button className="bg-blue-600 text-white text-sm px-3 py-1 rounded-md hover:bg-blue-700 transition-colors">
-          View Detail
-        </button>
       </div>
-      {notifications.length > 1 && (
-        <div className="mt-2 text-right">
-          <span className="text-xs text-card-muted">
-            {notifications.length - 1} more notification{notifications.length > 2 ? 's' : ''}
-          </span>
-        </div>
-      )}
     </div>
   );
 };

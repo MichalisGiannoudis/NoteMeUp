@@ -43,7 +43,7 @@ export const Dashboard = () => {
             layouts={layouts}
             breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
             cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-            rowHeight={150}
+            rowHeight={100}
             width={1200}
             onLayoutChange={onLayoutChange}
             isDraggable={true}
@@ -51,7 +51,7 @@ export const Dashboard = () => {
             margin={[16, 16]}>
             {Object.entries(widgets).map(([type, isVisible]) => (
               isVisible && (
-                <div key={type} className="bg-card-bg text-card-fg rounded-lg border border-opacity-20">
+                <div key={type}>
                   <Widget type={type} removeWidget={removeWidget} tasks={taskData}/>
                 </div>
               )
