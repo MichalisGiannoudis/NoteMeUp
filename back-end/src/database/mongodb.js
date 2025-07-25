@@ -11,7 +11,7 @@ export const initDatabase = async () => {
     process.exit(1);
   }
 };
-// 
+
 mongoose.connection.on('connected', () => {
   console.log('Mongoose connected to MongoDB');
 });
