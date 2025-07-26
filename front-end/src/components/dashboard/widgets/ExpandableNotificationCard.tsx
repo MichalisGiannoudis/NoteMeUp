@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Notification } from '@/types/notification';
-import { useRouter } from 'next/navigation';
 import { useDashboardStore } from '@/store/dashboardStore';
 
 interface ExpandableNotificationCardProps {
@@ -10,7 +9,6 @@ interface ExpandableNotificationCardProps {
 }
 
 export const ExpandableNotificationCard: React.FC<ExpandableNotificationCardProps> = ({ height, rowHeight, removeWidget }) => {
-  const router = useRouter();
   const [visibleNotifications, setVisibleNotifications] = useState<Notification[]>([]);
   const notifications = useDashboardStore(state => state.notifications);
   const isLoading = useDashboardStore(state => state.isLoading);
@@ -36,7 +34,7 @@ export const ExpandableNotificationCard: React.FC<ExpandableNotificationCardProp
       <div className="bg-card-bg rounded-lg h-full flex flex-col">
         <div className="flex justify-between items-center p-3 border-b">
           <h3 className="text-lg font-semibold">Notifications</h3>
-          <button onClick={() => removeWidget('notification')} className="text-gray-500 hover:text-red-500">×</button>
+          <button onClick={() => removeWidget('notification')} className="hover:text-red-500">×</button>
         </div>
         <div className="flex-grow flex items-center justify-center">
           <p className="text-card-muted">Loading notifications...</p>
@@ -50,9 +48,7 @@ export const ExpandableNotificationCard: React.FC<ExpandableNotificationCardProp
       <div className="bg-card-bg rounded-lg h-full flex flex-col">
         <div className="flex justify-between items-center p-3 border-b">
           <h3 className="text-lg font-semibold">Notifications</h3>
-          <button onClick={() => removeWidget('notification')} className="text-gray-500 hover:text-red-500">
-            ×
-          </button>
+          <button onClick={() => removeWidget('notification')} className="hover:text-red-500">×</button>
         </div>
         <div className="flex-grow p-3">
           <p className="text-red-500">Error loading notifications: {error}</p>
@@ -66,9 +62,7 @@ export const ExpandableNotificationCard: React.FC<ExpandableNotificationCardProp
       <div className="bg-card-bg rounded-lg h-full flex flex-col">
         <div className="flex justify-between items-center p-3 border-b">
           <h3 className="text-lg font-semibold">Notifications</h3>
-          <button onClick={() => removeWidget('notification')} className="text-gray-500 hover:text-red-500">
-            ×
-          </button>
+          <button onClick={() => removeWidget('notification')} className="hover:text-red-500">×</button>
         </div>
         <div className="flex-grow p-3">
           <p className="text-card-muted">No notifications available</p>

@@ -9,10 +9,9 @@ interface WidgetProps {
   removeWidget: (id: string) => void;
   height: number;
   rowHeight: number;
-  tasks?: any[];
 }
 
-export const Widget: React.FC<WidgetProps> = ({ type, removeWidget, height, rowHeight }) => {
+export const Widget: React.FC<WidgetProps> = ({ type, height, rowHeight, removeWidget }) => {
   const renderWidgetContent = () => {
     switch (type) {
       case 'notification':
@@ -24,18 +23,6 @@ export const Widget: React.FC<WidgetProps> = ({ type, removeWidget, height, rowH
         return (
           <ExpandableTasksCard height={height} rowHeight={rowHeight} removeWidget={removeWidget}/>
         );
-
-      //   return (
-      //     <>
-      //       <div className="flex justify-between items-center mb-2">
-      //         <h3 className="text-lg font-semibold">Tasks</h3>
-      //         <button onClick={() => removeWidget('tasks')} className="text-gray-500 hover:text-red-500">
-      //           ×
-      //         </button>
-      //       </div>
-      //       <TaskList title="On Going Task" subtitle="Best performing employee ranking" tasks={tasks} />
-      //     </>
-      //   );
       
       // case 'stats':
       //   return (

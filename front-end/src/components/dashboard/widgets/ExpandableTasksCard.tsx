@@ -58,7 +58,7 @@ export const ExpandableTasksCard: React.FC<ExpandableTasksCardProps> = ({ height
         )}
         
         {tasks.length > visibleTasks.length && (
-          <div className="p-2 text-center text-sm text-gray-500 border-t">
+          <div className="p-2 text-center text-md border-t">
             {tasks.length - visibleTasks.length} more task(s) - expand to view
           </div>
         )}
