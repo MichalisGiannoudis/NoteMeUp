@@ -1,5 +1,5 @@
 import User from "../models/user.js";
-import Task from "../models/notification.js";
+import Task from "../models/task.js";
 
 export default class TaskService {
 

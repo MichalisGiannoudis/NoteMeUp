@@ -32,7 +32,6 @@ const taskSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        default: false,
         required: false,
     },
     tags: {

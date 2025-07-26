@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDashboardStore } from '@/store/dashboardStore';
 import { Task } from '@/types/task';
+import { formatDueDate } from '@/types/task';
+import Image from 'next/image';
 
 interface ExpandableTasksCardProps {
   height: number;
@@ -22,14 +24,13 @@ export const ExpandableTasksCard: React.FC<ExpandableTasksCardProps> = ({ height
 
   return (
     <div className="bg-card-bg rounded-lg h-full flex flex-col overflow-hidden">
-      <div className="flex justify-between items-center p-3 border-b">
+      <div className="flex justify-between items-center p-1 border-b">
         <h3 className="text-lg font-semibold">Tasks</h3>
-        <button onClick={() => removeWidget('tasks')} className="hover:text-red-500">×</button>
+        <Image onClick={() => removeWidget('tasks')} src="/widget/widget-close.png" alt="Close" width={16} height={16}/>
       </div>
       
       <div className="flex-grow overflow-y-auto">
-        {visibleTasks.length > 0 ? (
-          visibleTasks.map((task, index) => (
+        {visibleTasks.length > 0 ? ( visibleTasks.map((task, index) => (
             <div key={index} className="border-b last:border-b-0 p-3">
               <div className="flex items-center">
                 <div className="flex-grow">
@@ -48,21 +49,21 @@ export const ExpandableTasksCard: React.FC<ExpandableTasksCardProps> = ({ height
                   </span>
                 </div>
                 <div className="text-sm">
-                  Due: <span className="font-medium">{task.dueDate ? (typeof task.dueDate === 'string' ? task.dueDate : task.dueDate.toLocaleDateString()) : 'N/A'}</span>
+                  Due: <span className="font-medium"> { formatDueDate(task.dueDate) }</span>
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <div className="p-3 text-center text-gray-500">No tasks available</div>
+          <div className="p-3 text-center"> No tasks available </div>
         )}
+        </div>
         
-        {tasks.length > visibleTasks.length && (
-          <div className="p-2 text-center text-md border-t">
-            {tasks.length - visibleTasks.length} more task(s) - expand to view
-          </div>
-        )}
-      </div>
+      {tasks.length > visibleTasks.length && (
+        <div className="p-2 text-center text-md border-t h-10 flex items-center justify-center">
+          <span className="truncate">{tasks.length - visibleTasks.length} more task(s) - expand to view </span>
+        </div>
+      )}
     </div>
   );
 };
