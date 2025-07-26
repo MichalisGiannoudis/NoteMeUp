@@ -5,14 +5,12 @@ import { User } from '@/types/user';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useWidgets } from '@/hooks/widgets/useWidgets.hook';
 import { ThemeButton } from '../theme/ThemeToggle';
 
 export const Header = ({ user }: {user: User | null}) => {
   const currentDate = new Date().toLocaleDateString('gr-GR', {weekday: 'long',month: 'long',day: 'numeric',year: 'numeric',});
   const router = useRouter();
   const { logout } = useAuthStore();
-  const { addNewWidget } = useWidgets();
   const [showDropdown, setShowDropdown] = useState(false);
   const widgetOptions = [
     { label: "Tasks", value: "tasks" },
@@ -26,7 +24,6 @@ export const Header = ({ user }: {user: User | null}) => {
   const handleDropdownSelect = (type: string) => {
     setWidgetType(type);
     setShowDropdown(false);
-    addNewWidget(type);
   };
 
   const handleLogout = () => {
@@ -37,7 +34,7 @@ export const Header = ({ user }: {user: User | null}) => {
   return (
     <div className="flex justify-between items-center p-4 bg-card-bg text-card-fg shadow-sm">
       <div className="flex items-center">
-        <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden mr-3">
+        <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
           <Image onClick={() => router.push('/user')} src={`${user?.profilePicture || '/dashboard/user-icon.png'}`} alt="ProfilePic" width={40} height={40} className="object-cover cursor-pointer"/>
         </div>
         <div>
@@ -51,9 +48,9 @@ export const Header = ({ user }: {user: User | null}) => {
           <div className="flex items-center mr-8" onClick={() => setShowDropdown((prev) => !prev)}>
             <Image src="/dashboard/plus-icon.png" alt="Logo" width={30} height={30} className="cursor-pointer" />    
               {showDropdown && ( 
-                <div className="absolute z-50 mt-2 bg-white border rounded shadow-lg top-12">
+                <div className="absolute z-50 mt-2 border rounded shadow-lg top-12">
                   {widgetOptions.map(opt => (
-                    <div key={opt.value} className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleDropdownSelect(opt.value)}>
+                    <div key={opt.value} className="px-4 py-2 cursor-pointer" onClick={() => handleDropdownSelect(opt.value)}>
                       {opt.label}
                     </div>
                 ))}

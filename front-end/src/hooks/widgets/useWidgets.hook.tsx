@@ -5,8 +5,7 @@ import { generateLayout } from '@/context/layout';
 interface UseWidgetsReturn {
   layouts: Layouts;
   widgets: {[key: string]: boolean};
-  addWidget: (widgetType: string) => void;
-  addNewWidget: (type: string) => void;
+  addWidget: (type: string) => void;
   removeWidget: (id: string) => void;
   onLayoutChange: (currentLayout: LayoutItem[], allLayouts: Layouts) => void;
 }
@@ -27,11 +26,6 @@ export const useWidgets = (): UseWidgetsReturn => {
     barChart: true,
     performanceChart: true
   });
-
-  const addWidget = (widgetType: string) => {
-    const newWidgets = { ...widgets, [widgetType]: true };
-    setWidgets(newWidgets);
-  };
 
   const onLayoutChange = (currentLayout: LayoutItem[], allLayouts: Layouts) => {
     const defaultLayout = generateLayout();
@@ -59,7 +53,11 @@ export const useWidgets = (): UseWidgetsReturn => {
     localStorage.setItem('dashboardLayout', JSON.stringify(constrainedLayouts));
   };
 
-  const addNewWidget = (type: string) => {
+  const removeWidget = (id: string) => {
+    setWidgets({ ...widgets, [id]: false });
+  };
+
+  const addWidget = (type: string) => {
     if (!widgets[type]) {
       setWidgets({ ...widgets, [type]: true });
       const newLayouts = { ...layouts } as Layouts;
@@ -105,10 +103,6 @@ export const useWidgets = (): UseWidgetsReturn => {
       localStorage.setItem('dashboardLayout', JSON.stringify(newLayouts));
     }
   };
-
-  const removeWidget = (id: string) => {
-    setWidgets({ ...widgets, [id]: false });
-  };
   
   useEffect(() => {
     const savedLayouts = localStorage.getItem('dashboardLayout');
@@ -148,5 +142,5 @@ export const useWidgets = (): UseWidgetsReturn => {
     }
   }, []);
 
-  return { layouts, widgets, addWidget, addNewWidget, removeWidget, onLayoutChange };
+  return { layouts, widgets, addWidget, removeWidget, onLayoutChange };
 };
