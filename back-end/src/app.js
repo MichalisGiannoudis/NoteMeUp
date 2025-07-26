@@ -1,6 +1,7 @@
 import express from 'express';
-import authRoutes from './routes/authRoutes.js';
+import authenticationRoutes from './routes/authenticationRoutes.js';
 import widgetRoutes from './routes/widgetsRoutes.js';
+import teamRoutses from './routes/teamRoutes.js';
 import { initDatabase } from './database/mongodb.js';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -18,7 +19,8 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Protection']
 }));
 
-app.use(authRoutes);
-app.use(widgetRoutes);
+app.use('/api/auth/', authenticationRoutes);
+app.use('/api/widget/', widgetRoutes);
+app.use('/api/team/', teamRoutses);
 
 export default app;
