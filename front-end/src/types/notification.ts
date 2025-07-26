@@ -8,3 +8,7 @@ export interface Notification {
     updatedAt: Date;
     read: boolean;
 }
+
+export function unReadNotifications(notifications : Notification[]) : Notification[] {
+    return notifications.filter(notification => !notification.read);
+}

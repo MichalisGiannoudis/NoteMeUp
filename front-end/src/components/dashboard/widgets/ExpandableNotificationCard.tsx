@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Notification } from '@/types/notification';
+import { Notification, unReadNotifications} from '@/types/notification';
 import { useDashboardStore } from '@/store/dashboardStore';
+import Image from 'next/image';
 
 interface ExpandableNotificationCardProps {
   height: number;
@@ -14,6 +15,7 @@ export const ExpandableNotificationCard: React.FC<ExpandableNotificationCardProp
   const isLoading = useDashboardStore(state => state.isLoading);
   const error = useDashboardStore(state => state.error);
   const fetchNotifications = useDashboardStore(state => state.fetchNotifications);
+  const updateNotification = useDashboardStore(state => state.updateNotification);
 
   useEffect(() => {
     if (notifications.length === 0) {
@@ -23,11 +25,21 @@ export const ExpandableNotificationCard: React.FC<ExpandableNotificationCardProp
 
   useEffect(() => {
     const headerHeight = 40;
+    const footerHeight = 32;
+    const notificationHeight = 70;
     const availableHeight = height - headerHeight;
-    const notificationsPerRow = 1;
-    const maxVisibleNotifications = Math.max(1, Math.floor(availableHeight / rowHeight) * notificationsPerRow);
-    setVisibleNotifications(notifications.slice(0, maxVisibleNotifications));
-  }, [height, rowHeight, notifications]);
+
+    const unreadNotifications = notifications.filter(n => n.read === false);
+    const maxVisibleNotifications = Math.max(1, Math.floor(availableHeight / notificationHeight));
+    
+    if (notifications.length > maxVisibleNotifications) {
+      const availableWithFooter = availableHeight - footerHeight;
+      const adjustedMax = Math.max(1, Math.floor(availableWithFooter / notificationHeight));
+      setVisibleNotifications(unreadNotifications.slice(0, adjustedMax));
+    } else {
+      setVisibleNotifications(unreadNotifications);
+    }
+  }, [height, notifications]);
 
   if ((!notifications.length && !error) || (isLoading && notifications.length === 0)) {
     return (
@@ -112,38 +124,45 @@ export const ExpandableNotificationCard: React.FC<ExpandableNotificationCardProp
     }
   };
 
-  return (
-    <div className="bg-card-bg rounded-lg h-full flex flex-col">
-      <div className="flex justify-between items-center p-3 border-b">
-        <h3 className="text-lg font-semibold">Notifications</h3>
-        <button onClick={() => removeWidget('notification')} className="hover:text-red-500">×</button>
-      </div>
-      
-      <div className="flex-grow overflow-y-auto">
-        {visibleNotifications.map((notification, index) => (
-          <div key={index} className="border-b last:border-b-0 p-3">
-            <div className="flex items-start">
-              <div className="p-2 bg-background rounded-full mr-3">
-                {getNotificationIcon(notification.type)}
-              </div>
-              <div className="flex flex-grow flex-col gap-2">
-                <div className="flex justify-between items-center">
-                  <h3 className="font-bold text-card-fg capitalize">
+return (
+  <div className="bg-card-bg rounded-lg h-full flex flex-col">
+    <div className="flex justify-between items-center p-1 border-b h-10">
+      <h3 className="text-lg font-semibold">Notifications</h3>
+      <Image onClick={() => removeWidget('notification')} src="/widget/widget-close.png" alt="Close" width={16} height={16} />
+    </div>
+    
+    <div className="flex-grow overflow-y-auto flex flex-col justify-center">
+      {visibleNotifications.length === 0 ? (
+        <div className="flex items-center justify-center h-full">
+          <p className="text-card-muted text-md">No notifications available</p>
+        </div>
+      ) : (
+        <div>
+          {visibleNotifications.filter(n => n.read === false).map((notification, index) => (
+            <div key={index} className="border-b last:border-b-0 h-[82px] px-3 flex items-center">
+              <div className="flex items-center w-full">
+                <div className="p-2 bg-background rounded-full mr-2 flex-shrink-0">
+                  {getNotificationIcon(notification.type)}
+                </div>
+                <div className="flex flex-grow flex-col">
+                  <h3 className="font-bold text-card-fg capitalize text-lg">
                     {notification.type || "Notification"}
                   </h3>
+                  <p className="text-card-muted text-md line-clamp-2">{notification.message}</p>
                 </div>
-                <p className="text-card-muted">{notification.message || "No message available"}</p>
+                <Image onClick={() => updateNotification(notification)} src="/widget/widget-notification-off.png" alt="Close" width={16} height={16} />
               </div>
             </div>
-          </div>
-        ))}
-        
-        {notifications.length > visibleNotifications.length && (
-          <div className="p-2 text-center text-md border-t">
-            {notifications.length - visibleNotifications.length} more notification(s) - expand to view
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
+
+    {notifications.length > visibleNotifications.length && (
+      <div className="border-t h-8 flex items-center justify-center">
+        <span className="text-md truncate px-2">{unReadNotifications(notifications).length - visibleNotifications.length} more notification(s) - expand to view</span>
+      </div>
+    )}
+  </div>
   );
 };

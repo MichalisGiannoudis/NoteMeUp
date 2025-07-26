@@ -11,20 +11,13 @@ interface UseWidgetsReturn {
 }
 
 export const useWidgets = (): UseWidgetsReturn => {
-  const [layouts, setLayouts] = useState<Layouts>({
-    lg: [],
-    md: [],
-    sm: [],
-    xs: [],
-    xxs: []
-  });
-
+  const [layouts, setLayouts] = useState<Layouts>({lg: [],md: [],sm: [],xs: []});
   const [widgets, setWidgets] = useState<{[key: string]: boolean}>({
     tasks: true,
-    stats: true,
     notification: true,
-    barChart: true,
-    performanceChart: true
+    // stats: true,
+    // barChart: true,
+    // performanceChart: true
   });
 
   const onLayoutChange = (currentLayout: LayoutItem[], allLayouts: Layouts) => {

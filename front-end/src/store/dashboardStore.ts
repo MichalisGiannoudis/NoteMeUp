@@ -17,7 +17,7 @@ interface DashboardState {
   
     fetchAllDashboardData: (forceRefresh?: boolean) => Promise<void>;
     fetchNotifications: () => Promise<void>;
-    updateNotifications : (updatedNotification: Notification) => Promise<void>;
+    updateNotification : (updatedNotification: Notification) => Promise<void>;
     fetchTasks: () => Promise<void>;
     fetchStats: () => Promise<void>;
     fetchProjects: () => Promise<void>;
@@ -96,7 +96,9 @@ export const useDashboardStore = create<DashboardState>()(
                 }
             },
 
-            updateNotifications: async (updatedNotification: Notification) => {
+            updateNotification: async (notification: Notification) => {
+
+                const updatedNotification = {...notification, read: true};
                 set((state) => ({ notifications: state.notifications.map((n) =>n.id === updatedNotification.id ? updatedNotification : n), }));
 
                 try {
@@ -118,7 +120,7 @@ export const useDashboardStore = create<DashboardState>()(
                         },
                         data: { 
                             notificationId: updatedNotification.id,
-                            notificationRead: !updatedNotification.read
+                            notificationRead: updatedNotification.read
                         },
                         withCredentials: true
                     });

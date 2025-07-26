@@ -6,14 +6,10 @@ import Image from 'next/image';
 
 export const NotificationsPage = () => {
 
-    const updateNotifications = useDashboardStore(state => state.updateNotifications);
+    const updateNotification = useDashboardStore(state => state.updateNotification);
     const notifications = useDashboardStore(state => state.notifications);
     const isLoading = useDashboardStore(state => state.isLoading);
     const error = useDashboardStore(state => state.error);
-
-    const silenceNotification = (notification : Notification) => {
-        updateNotifications(notification);
-    };
 
     return (
         <div>
@@ -43,7 +39,7 @@ export const NotificationsPage = () => {
                         <p className="text-sm mt-1">{notification.message}</p>
                         <p className="text-xs mt-2">{new Date(notification.createdAt).toLocaleString()}</p>
                     </div>
-                    <Image onClick={() => silenceNotification(notification)} src="/widget/widget-notification-off.png" alt="Close" width={24} height={24} className="hover:animate-ping"/>
+                    <Image onClick={() => updateNotification(notification)} src="/widget/widget-notification-off.png" alt="Close" width={24} height={24} className="hover:animate-ping"/>
                 </div>
             ))}
         </div>
