@@ -1,8 +1,7 @@
 import React from 'react';
-import { Chart } from '../Chart';
-import { StatCard } from '../StatCard';
 import { ExpandableTasksCard } from './ExpandableTasksCard';
 import { ExpandableNotificationCard } from './ExpandableNotificationCard';
+import { ExpandableToDoCard } from './ExpandableToDoCard';
 
 interface WidgetProps {
   type: string;
@@ -22,6 +21,11 @@ export const Widget: React.FC<WidgetProps> = ({ type, height, rowHeight, removeW
       case 'tasks':
         return (
           <ExpandableTasksCard height={height} rowHeight={rowHeight} removeWidget={removeWidget}/>
+        );
+
+      case 'todos':
+        return (
+          <ExpandableToDoCard height={height} rowHeight={rowHeight} removeWidget={removeWidget}/>
         );
       
       // case 'stats':

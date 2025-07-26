@@ -3,11 +3,13 @@ import { persist } from 'zustand/middleware';
 import axios from 'axios';
 import { Notification } from '@/types/notification';
 import { Task } from '@/types/task';
+import { Todo } from '@/types/todo';
 import { useAuthStore } from './authStore';
 
 interface DashboardState {
     notifications: Notification[];
     tasks: Task[];
+    todos: Todo[];
     stats: any;
     projects: any[];
     charts: any;
@@ -19,6 +21,7 @@ interface DashboardState {
     fetchNotifications: () => Promise<void>;
     updateNotification : (updatedNotification: Notification) => Promise<void>;
     fetchTasks: () => Promise<void>;
+    fetchTodos: () => Promise<void>;
     fetchStats: () => Promise<void>;
     fetchProjects: () => Promise<void>;
     fetchCharts: () => Promise<void>;
@@ -29,6 +32,7 @@ export const useDashboardStore = create<DashboardState>()(
         (set, get) => ({
             notifications: [],
             tasks: [],
+            todos: [],
             stats: null,
             projects: [],
             charts: null,
@@ -50,6 +54,7 @@ export const useDashboardStore = create<DashboardState>()(
                     await Promise.all([
                         get().fetchNotifications(),
                         get().fetchTasks(),
+                        get().fetchTodos(),
                         //get().fetchStats(),
                         //get().fetchProjects(),
                         //get().fetchCharts()
@@ -164,6 +169,36 @@ export const useDashboardStore = create<DashboardState>()(
                 }
             },
             
+            fetchTodos: async () => {
+                try {
+                    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+                    const { token } = useAuthStore.getState();
+                    
+                    if (!token) {
+                        console.error("No authentication token available");
+                        return;
+                    }
+                    
+                    const response = await axios({
+                        method: 'GET',
+                        url: `${API_URL}/todo/getTodos`,
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                            'X-CSRF-Protection': '1'
+                        },
+                        withCredentials: true
+                    });
+                    
+                    if (response.data.success && response.data.todos) {
+                        set({ todos: response.data.todos });
+                    }
+                } catch (error) {
+                    console.error("Todos fetch error:", error);
+                    set({ error: "Failed to fetch todos" });
+                }
+            },
+
             fetchStats: async () => {
             },
             

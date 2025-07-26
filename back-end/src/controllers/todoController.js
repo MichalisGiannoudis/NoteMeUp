@@ -7,7 +7,7 @@ class TodoController{
         this.todoService = new TodoService();
     }
 
-    async getTodo(req, res) {
+    async getTodos(req, res) {
         try {
             const authHeader = req.headers.authorization; 
             if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -20,7 +20,7 @@ class TodoController{
                 return res.status(401).json({ error: true, message: "Unauthorized" });
             }
 
-            const todos = await this.todoService.getTasks(user._id);
+            const todos = await this.todoService.getTodos(user._id);
             
             return res.status(200).json({success: true, user: user, todos: todos});
         }

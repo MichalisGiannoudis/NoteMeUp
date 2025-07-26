@@ -15,9 +15,9 @@ export const useWidgets = (): UseWidgetsReturn => {
   const [widgets, setWidgets] = useState<{[key: string]: boolean}>({
     tasks: true,
     notification: true,
-    // stats: true,
-    // barChart: true,
-    // performanceChart: true
+    todos: true,
+    barChart: false,
+    performanceChart: false
   });
 
   const onLayoutChange = (currentLayout: LayoutItem[], allLayouts: Layouts) => {
@@ -79,6 +79,7 @@ export const useWidgets = (): UseWidgetsReturn => {
         } else {
           if (type === 'notification') h = 1;
           if (type === 'stats') h = 1;
+          if (type === 'todos') h = 2;
           
           newLayouts[breakpoint].push({
             i: type,
