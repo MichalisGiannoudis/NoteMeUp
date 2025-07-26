@@ -28,7 +28,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+    default: function() { return `${this.firstname.toLowerCase()}.${this.lastname.toLowerCase()}`;},
     trim: true
+  },
+  role: {
+    type: String,
+    required: true,
+    enum: ['admin', 'user', 'guest'],
+    default: 'user'
   },
   address: {
     type: String,
