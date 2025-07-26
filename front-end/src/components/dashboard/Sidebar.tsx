@@ -8,6 +8,7 @@ import { useDashboardStore } from '@/store/dashboardStore';
 export const Sidebar: React.FC = () => {
 
   const notifications = useDashboardStore(state => state.notifications);
+  const tasks = useDashboardStore(state => state.tasks);
   const router = useRouter();
 
   return (
@@ -25,15 +26,15 @@ export const Sidebar: React.FC = () => {
         <div className="flex items-center px-4 py-2 cursor-pointer" onClick={() => {}}>
           <Image src="/dashboard/inbox-icon.png" width={20} height={20} alt="Inboxes" />
           <span className="ml-3">Inboxes</span>
-          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-red-600 rounded-full ml-auto">0</span>
         </div>
         <div className="flex items-center px-4 py-2 cursor-pointer" onClick={() => {}}>
           <Image src="/dashboard/performance-icon.png" width={20} height={20} alt="Performances" />
           <span className="ml-3">Performance</span>
         </div>
-        <div className="flex items-center px-4 py-2 cursor-pointer pl-6" onClick={() => {}}>
+        <div className="flex items-center px-4 py-2 cursor-pointer pl-6" onClick={() => {router.push('/tasks')}}>
           <Image src="/dashboard/tasks-icon.png" width={16} height={16} alt="Active Project" />
           <span className="ml-3">Tasks</span>
+          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-red-600 rounded-full ml-auto">{tasks.length}</span>
         </div>
         <div className="flex items-center px-4 py-2 cursor-pointer" onClick={() => {}}>
           <Image src="/dashboard/analytics-icon.png" width={20} height={20} alt="Analytics" />

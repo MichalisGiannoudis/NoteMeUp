@@ -34,7 +34,7 @@ export function useRequireAuth() {
     if (!authenticated) {
       router.push('/');
     } else {
-      fetchAllDashboardData();
+      fetchAllDashboardData(true);
     }
   }, [isLoading, authenticated, router, isInitialized, fetchAllDashboardData]);
 

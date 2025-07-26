@@ -7,7 +7,6 @@ export const NotificationsPage = () => {
     const notifications = useDashboardStore(state => state.notifications);
     const isLoading = useDashboardStore(state => state.isLoading);
     const error = useDashboardStore(state => state.error);
-    const fetchNotifications = useDashboardStore(state => state.fetchNotifications);
 
     return (
         <div>

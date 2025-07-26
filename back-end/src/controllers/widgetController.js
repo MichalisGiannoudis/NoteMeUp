@@ -51,7 +51,7 @@ class WidgetController{
                 return res.status(401).json({ error: true, message: "Unauthorized" });
             }
 
-            const tasks = await this.tasksService.getTasks(user._id);
+            const tasks = await this.taskService.getTasks(user._id);
                 
             return res.status(200).json({success: true, user: user, tasks: tasks});
         }

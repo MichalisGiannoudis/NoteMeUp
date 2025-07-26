@@ -2,10 +2,12 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import axios from 'axios';
 import { Notification } from '@/types/notification';
+import { Task } from '@/types/task';
+import { useAuthStore } from './authStore';
 
 interface DashboardState {
     notifications: Notification[];
-    tasks: any[];
+    tasks: Task[];
     stats: any;
     projects: any[];
     charts: any;
@@ -13,7 +15,7 @@ interface DashboardState {
     error: string | null;
     lastFetched: number;
   
-    fetchAllDashboardData: () => Promise<void>;
+    fetchAllDashboardData: (forceRefresh?: boolean) => Promise<void>;
     fetchNotifications: () => Promise<void>;
     fetchTasks: () => Promise<void>;
     fetchStats: () => Promise<void>;
@@ -24,8 +26,8 @@ interface DashboardState {
 export const useDashboardStore = create<DashboardState>()(
     persist(
         (set, get) => ({
-            tasks: [],
             notifications: [],
+            tasks: [],
             stats: null,
             projects: [],
             charts: null,
@@ -33,11 +35,11 @@ export const useDashboardStore = create<DashboardState>()(
             error: null,
             lastFetched: 0,
 
-            fetchAllDashboardData: async () => {
+            fetchAllDashboardData: async (forceRefresh = false) => {
                 const { lastFetched } = get();
                 const now = Date.now();
                 
-                if (now - lastFetched < 5 * 60 * 1000 && lastFetched !== 0) {
+                if (!forceRefresh && now - lastFetched < 5 * 60 * 1000 && lastFetched !== 0) {
                     return;
                 }
                 
@@ -46,12 +48,14 @@ export const useDashboardStore = create<DashboardState>()(
                 try {
                     await Promise.all([
                         get().fetchNotifications(),
-                        //get().fetchTasks(),
+                        get().fetchTasks(),
                         //get().fetchStats(),
                         //get().fetchProjects(),
                         //get().fetchCharts()
                     ]);
                 
+                    console.log("Dashboard data fetched successfully");
+
                     set({ lastFetched: now });
                 } catch (error) {
                     set({ error: "Failed to fetch dashboard data" });
@@ -61,20 +65,10 @@ export const useDashboardStore = create<DashboardState>()(
                 }
             },
             
-            fetchTasks: async () => {
-                try {
-                    const API_URL = process.env.NEXT_PUBLIC_API_URL;
-                    const response = await axios.get(`${API_URL}/tasks`);
-                    set({ tasks: response.data });
-                } catch (error) {
-                    console.error("Tasks fetch error:", error);
-                }
-            },
-            
             fetchNotifications: async () => {
                 try {
                     const API_URL = process.env.NEXT_PUBLIC_API_URL;
-                    const token = localStorage.getItem('auth_token');
+                    const { token } = useAuthStore.getState();
                     
                     if (!token) {
                         console.error("No authentication token available");
@@ -100,35 +94,44 @@ export const useDashboardStore = create<DashboardState>()(
                     set({ error: "Failed to fetch notifications" });
                 }
             },
-            
-            fetchStats: async () => {
+
+            fetchTasks: async () => {
                 try {
                     const API_URL = process.env.NEXT_PUBLIC_API_URL;
-                    const response = await axios.get(`${API_URL}/stats`);
-                    set({ stats: response.data });
+                    const { token } = useAuthStore.getState();
+                    
+                    if (!token) {
+                        console.error("No authentication token available");
+                        return;
+                    }
+                    
+                    const response = await axios({
+                        method: 'GET',
+                        url: `${API_URL}/widget/getTasks`,
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                            'X-CSRF-Protection': '1'
+                        },
+                        withCredentials: true
+                    });
+                    
+                    if (response.data.success && response.data.tasks) {
+                        set({ tasks: response.data.tasks });
+                    }
                 } catch (error) {
-                    console.error("Stats fetch error:", error);
+                    console.error("Notifications fetch error:", error);
+                    set({ error: "Failed to fetch tasks" });
                 }
+            },
+            
+            fetchStats: async () => {
             },
             
             fetchProjects: async () => {
-                try {
-                    const API_URL = process.env.NEXT_PUBLIC_API_URL;
-                    const response = await axios.get(`${API_URL}/projects`);
-                    set({ projects: response.data });
-                } catch (error) {
-                    console.error("Projects fetch error:", error);
-                }
             },
             
             fetchCharts: async () => {
-                try {
-                    const API_URL = process.env.NEXT_PUBLIC_API_URL;
-                    const response = await axios.get(`${API_URL}/charts`);
-                    set({ charts: response.data });
-                } catch (error) {
-                    console.error("Charts fetch error:", error);
-                }
             }
         }),
         {
