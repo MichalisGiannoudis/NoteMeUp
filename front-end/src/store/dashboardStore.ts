@@ -17,6 +17,7 @@ interface DashboardState {
   
     fetchAllDashboardData: (forceRefresh?: boolean) => Promise<void>;
     fetchNotifications: () => Promise<void>;
+    updateNotifications : (updatedNotification: Notification) => Promise<void>;
     fetchTasks: () => Promise<void>;
     fetchStats: () => Promise<void>;
     fetchProjects: () => Promise<void>;
@@ -95,6 +96,42 @@ export const useDashboardStore = create<DashboardState>()(
                 }
             },
 
+            updateNotifications: async (updatedNotification: Notification) => {
+                set((state) => ({ notifications: state.notifications.map((n) =>n.id === updatedNotification.id ? updatedNotification : n), }));
+
+                try {
+                    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+                    const { token } = useAuthStore.getState();
+                    
+                    if (!token) {
+                        console.error("No authentication token available");
+                        return;
+                    }
+                    
+                    const response = await axios({
+                        method: 'POST',
+                        url: `${API_URL}/widget/updateNotification`,
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                            'X-CSRF-Protection': '1'
+                        },
+                        data: { 
+                            notificationId: updatedNotification.id,
+                            notificationRead: !updatedNotification.read
+                        },
+                        withCredentials: true
+                    });
+                    
+                    if (response.data.success && response.data.tasks) {
+                        set({ tasks: response.data.tasks });
+                    }
+                } catch (error) {
+                    console.error("Notifications update error:", error);
+                    set({ error: "Failed to update notifications" });
+                }
+            },
+
             fetchTasks: async () => {
                 try {
                     const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -120,7 +157,7 @@ export const useDashboardStore = create<DashboardState>()(
                         set({ tasks: response.data.tasks });
                     }
                 } catch (error) {
-                    console.error("Notifications fetch error:", error);
+                    console.error("Tasks fetch error:", error);
                     set({ error: "Failed to fetch tasks" });
                 }
             },
@@ -132,7 +169,7 @@ export const useDashboardStore = create<DashboardState>()(
             },
             
             fetchCharts: async () => {
-            }
+            },
         }),
         {
             name: 'dashboard-storage',

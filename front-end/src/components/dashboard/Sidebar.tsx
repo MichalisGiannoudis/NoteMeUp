@@ -43,7 +43,7 @@ export const Sidebar: React.FC = () => {
         <div className="flex items-center px-4 py-2 cursor-pointer" onClick={() => {router.push('/notifications')}}>
           <Image src="/dashboard/notification-icon.png" width={20} height={20} alt="Notification" />
           <span className="ml-3">Notifications</span>
-          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-red-600 rounded-full ml-auto">{notifications.length}</span>
+          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-red-600 rounded-full ml-auto">{notifications.filter(n => n.read === false).length}</span>
         </div>
         <div className="flex items-center px-4 py-2 cursor-pointer" onClick={() => {}}>
           <Image src="/dashboard/settings-icon.png" width={20} height={20} alt="Help Center" />

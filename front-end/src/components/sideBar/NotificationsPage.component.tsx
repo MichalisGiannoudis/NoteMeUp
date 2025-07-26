@@ -1,12 +1,19 @@
 'use client'
 
 import { useDashboardStore } from "@/store/dashboardStore";
+import { Notification } from "@/types/notification";
+import Image from 'next/image';
 
 export const NotificationsPage = () => {
 
+    const updateNotifications = useDashboardStore(state => state.updateNotifications);
     const notifications = useDashboardStore(state => state.notifications);
     const isLoading = useDashboardStore(state => state.isLoading);
     const error = useDashboardStore(state => state.error);
+
+    const silenceNotification = (notification : Notification) => {
+        updateNotifications(notification);
+    };
 
     return (
         <div>
@@ -26,16 +33,17 @@ export const NotificationsPage = () => {
                     <p className="text-card-muted">No notifications available</p>
                 </div>
             )}
-            {notifications.map(notification => (
-                <div key={notification.id} className="bg-gradient-to-r from-blue-50 via-white to-purple-50 rounded-xl p-5 shadow-lg mb-4 border border-gray-200 flex items-start gap-4 transition hover:shadow-xl">
+            {notifications.filter(n => n.read === false).map(notification => (
+                <div key={notification.id} className="bg-card-bg rounded-xl p-5 shadow-lg mb-4 border border-gray-200 flex items-start gap-4 transition hover:shadow-xl">
                     <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-500 font-bold text-lg">
                         {notification.type[0]}
                     </div>
                     <div className="flex-1">
                         <h2 className="text-lg font-semibold text-blue-700">{notification.type}</h2>
-                        <p className="text-sm text-gray-700 mt-1">{notification.message}</p>
-                        <p className="text-xs text-gray-400 mt-2">{new Date(notification.createdAt).toLocaleString()}</p>
+                        <p className="text-sm mt-1">{notification.message}</p>
+                        <p className="text-xs mt-2">{new Date(notification.createdAt).toLocaleString()}</p>
                     </div>
+                    <Image onClick={() => silenceNotification(notification)} src="/widget/widget-notification-off.png" alt="Close" width={24} height={24} className="hover:animate-ping"/>
                 </div>
             ))}
         </div>
