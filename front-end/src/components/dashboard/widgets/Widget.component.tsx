@@ -1,31 +1,30 @@
 import React from 'react';
 import { Chart } from '../Chart';
-import { TaskList } from '../TaskList';
 import { StatCard } from '../StatCard';
-import { NotificationCard } from '../NotificationCard';
+import { ExpandableTasksCard } from './ExpandableTasksCard';
+import { ExpandableNotificationCard } from './ExpandableNotificationCard';
 
 interface WidgetProps {
   type: string;
   removeWidget: (id: string) => void;
+  height: number;
+  rowHeight: number;
   tasks?: any[];
 }
 
-export const Widget: React.FC<WidgetProps> = ({ type, removeWidget, tasks = [] }) => {
+export const Widget: React.FC<WidgetProps> = ({ type, removeWidget, height, rowHeight }) => {
   const renderWidgetContent = () => {
     switch (type) {
       case 'notification':
         return (
-          <>
-            <NotificationCard/>
-          </>
-
-          //   <div className="flex justify-between items-center mb-2">
-          //     <h3 className="text-lg font-semibold">Notifications</h3>
-          //     <button onClick={() => removeWidget('notification')} className="text-gray-500 hover:text-red-500"> × </button>
-          //   </div>
+          <ExpandableNotificationCard height={height} rowHeight={rowHeight} removeWidget={removeWidget}/>
         );
 
-      // case 'tasks':
+      case 'tasks':
+        return (
+          <ExpandableTasksCard height={height} rowHeight={rowHeight} removeWidget={removeWidget}/>
+        );
+
       //   return (
       //     <>
       //       <div className="flex justify-between items-center mb-2">
@@ -98,7 +97,7 @@ export const Widget: React.FC<WidgetProps> = ({ type, removeWidget, tasks = [] }
   };
 
   return (
-    <div key={type} className=" rounded-lg border overflow-hidden">
+    <div key={type} className="rounded-lg border h-full overflow-hidden">
       {renderWidgetContent()}
     </div>
   );
