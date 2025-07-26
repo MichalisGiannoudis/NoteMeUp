@@ -46,7 +46,6 @@ export function useUpdateUser(): UpdateUserResponse {
       });
       
       if (response.data.success && response.data.user) {
-        // Update the user in the auth store
         setUser(response.data.user);
         setSuccess(true);
         setIsLoading(false);

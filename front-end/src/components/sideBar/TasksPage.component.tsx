@@ -27,14 +27,14 @@ export const TasksPage = () => {
                 </div>
             )}
             {tasks.map(task => (
-                <div key={task.id} className="bg-gradient-to-r from-blue-50 via-white to-purple-50 rounded-xl p-5 shadow-lg mb-4 border border-gray-200 flex items-start gap-4 transition hover:shadow-xl">
+                <div key={task.id} className="bg-card-bg rounded-xl p-5 shadow-lg mb-4 border border-gray-200 flex items-start gap-4 transition hover:shadow-xl">
                     <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-500 font-bold text-lg">
                         {task.type[0]}
                     </div>
                     <div className="flex-1">
                         <h2 className="text-lg font-semibold text-blue-700">{task.type}</h2>
-                        <p className="text-sm text-gray-700 mt-1">{task.message}</p>
-                        <p className="text-xs text-gray-400 mt-2">
+                        <p className="text-sm mt-1">{task.message}</p>
+                        <p className="text-x mt-2">
                             {task.createdAt ? new Date(task.createdAt).toLocaleString() : "Unknown date"}
                         </p>
                     </div>

@@ -89,19 +89,19 @@ export const UserComponent = () => {
                         </div>
                     </div>
                     
-                    <div className="md:w-2/3 p-8">
-                        <h1 className="text-2xl font-bold text-gray-800 mb-6">
+                    <div className="bg-card-bg md:w-2/3 p-8">
+                        <h1 className="text-2xl font-bold mb-6">
                             {isEditing ? 'Edit Your Information' : 'User Information'}
                         </h1>
                         
                         {success && (
-                            <div className="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                            <div className="mb-4 border border-green-400 text-green-700 px-4 py-3 rounded">
                                 Profile updated successfully!
                             </div>
                         )}
                         
                         {error && (
-                            <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                            <div className="mb-4 border border-red-400 text-red-700 px-4 py-3 rounded">
                                 {error}
                             </div>
                         )}
@@ -110,31 +110,31 @@ export const UserComponent = () => {
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                                        <label className="block text-sm font-medium mb-1">First Name</label>
                                         <input type="text" name="firstname" value={formData.firstname} onChange={handleInputChange}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600" required/>
                                     </div>
                                     
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                                        <label className="block text-sm font-medium mb-1">Last Name</label>
                                         <input type="text" name="lastname" value={formData.lastname} onChange={handleInputChange}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600" required/>
                                     </div>
                                     
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                                        <label className="block text-sm font-medium mb-1">Username</label>
                                         <input type="text" name="userName" value={formData.username} onChange={handleInputChange} 
                                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600" required/>
                                     </div>
                                     
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Telephone</label>
+                                        <label className="block text-sm font-medium mb-1">Telephone</label>
                                         <input type="tel" name="telephone" value={formData.telephone ?? ''} onChange={handleInputChange}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"/>
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                                        <label className="block text-sm font-medium mb-1">Address</label>
                                         <input type="text" name="address" value={formData.address} onChange={handleInputChange}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"/>
                                     </div>
@@ -142,11 +142,11 @@ export const UserComponent = () => {
                                 </div>
                                 
                                 <div className="flex justify-end space-x-3 pt-4">
-                                    <button type="button" onClick={() => setIsEditing(false)} className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                                    <button type="button" onClick={() => setIsEditing(false)} className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
                                         Cancel
                                     </button>
                                     <button type="submit" disabled={isUpdating}
-                                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
+                                        className="px-4 py-2 bg-blue-60 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
                                         {isUpdating ? (
                                             <span className="flex items-center">
                                                 <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -163,28 +163,33 @@ export const UserComponent = () => {
                             <div className="space-y-4">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <h3 className="text-sm font-medium text-gray-500">First Name</h3>
+                                        <h3 className="text-sm font-medium">First Name</h3>
                                         <p className="mt-1 text-md ">{user.firstname}</p>
                                     </div>
                                     
                                     <div>
-                                        <h3 className="text-sm font-medium text-gray-500">Last Name</h3>
+                                        <h3 className="text-sm font-medium">Last Name</h3>
                                         <p className="mt-1 text-md ">{user.lastname}</p>
                                     </div>
                                     
                                     <div>
-                                        <h3 className="text-sm font-medium text-gray-500">Username</h3>
+                                        <h3 className="text-sm font-medium">Username</h3>
                                         <p className="mt-1 text-md ">{user.username}</p>
                                     </div>
                                     
                                     <div>
-                                        <h3 className="text-sm font-medium text-gray-500">Telephone</h3>
+                                        <h3 className="text-sm font-medium">Telephone</h3>
                                         <p className="mt-1 text-md ">{user.telephone || 'Not provided'}</p>
                                     </div>
 
                                     <div>
-                                        <h3 className="text-sm font-medium text-gray-500">Address</h3>
+                                        <h3 className="text-sm font-medium">Address</h3>
                                         <p className="mt-1 text-md ">{user.address || 'Not provided'}</p>
+                                    </div>
+
+                                    <div>
+                                        <h3 className="text-sm font-medium">Role</h3>
+                                        <p className="mt-1 text-md ">{user.role || 'Not provided'}</p>
                                     </div>
                                 </div>
                             </div>
