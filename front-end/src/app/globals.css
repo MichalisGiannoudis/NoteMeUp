@@ -9,9 +9,9 @@
 }
 
 .dark {
-  --background: #1a202c;
+  --background: #000000;
   --foreground: #f7fafc;
-  --card-bg: #2d3748;
+  --card-bg: #28292c;
   --card-fg: #ffffff;
   --card-muted: #a0aec0;
 }
