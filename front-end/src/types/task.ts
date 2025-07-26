@@ -17,13 +17,9 @@ export interface Task {
   updatedAt?: string | Date;
 }
 
-// Helper type for creating a new task
 export type CreateTaskInput = Omit<Task, 'id' | 'createdAt' | 'updatedAt'>;
-
-// Helper type for updating an existing task
 export type UpdateTaskInput = Partial<Omit<Task, 'id' | 'createdAt' | 'updatedAt'>>;
 
-// Helper function to check if a task is overdue
 export const isTaskOverdue = (task: Task): boolean => {
   if (!task.dueDate) return false;
   
@@ -33,13 +29,11 @@ export const isTaskOverdue = (task: Task): boolean => {
   return dueDate < now;
 };
 
-// Helper function to format the due date in a human-readable format
 export const formatDueDate = (date?: string | Date): string => {
   if (!date) return 'No due date';
   
   const dueDate = new Date(date);
   
-  // Format: "Jul 25, 2025 at 2:30 PM"
   return dueDate.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
@@ -52,7 +46,6 @@ export const formatDueDate = (date?: string | Date): string => {
   });
 };
 
-// Helper function to get color based on priority
 export const getPriorityColor = (priority: TaskPriority): string => {
   switch (priority) {
     case 'high':
@@ -66,7 +59,6 @@ export const getPriorityColor = (priority: TaskPriority): string => {
   }
 };
 
-// Helper function to get status display text
 export const getStatusDisplayText = (status: TaskStatus): string => {
   switch (status) {
     case 'in-progress':
@@ -74,25 +66,20 @@ export const getStatusDisplayText = (status: TaskStatus): string => {
     case 'not-started':
       return 'Not Started';
     default:
-      // Capitalize first letter of status
       return status.charAt(0).toUpperCase() + status.slice(1);
   }
 };
 
-// Filter tasks by status
 export const filterTasksByStatus = (tasks: Task[], status: TaskStatus): Task[] => {
   return tasks.filter(task => task.status === status);
 };
 
-// Filter tasks by type
 export const filterTasksByType = (tasks: Task[], type: TaskType): Task[] => {
   return tasks.filter(task => task.type === type);
 };
 
-// Sort tasks by due date
 export const sortTasksByDueDate = (tasks: Task[], ascending = true): Task[] => {
   return [...tasks].sort((a, b) => {
-    // Handle tasks without due dates
     if (!a.dueDate) return ascending ? 1 : -1;
     if (!b.dueDate) return ascending ? -1 : 1;
     
