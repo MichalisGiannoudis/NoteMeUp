@@ -17,6 +17,24 @@ export default class NotificationService {
         }
     }
 
+    async updateNotification(userId = null, notificationId, notificationRead) {
+        try {
+            const notification = await Notification.findOneAndUpdate(
+                { id: parseInt(notificationId) },
+                { $set: { read: notificationRead } },
+                { new: true }
+            );
+            if (!notification) {
+                throw new Error("Notification not found or does not belong to the user");
+            }
+            return notification;
+        }
+        catch (error) {
+            console.error("Error in updateNotification:", error);
+            throw new Error("Error updating notification: " + error.message);
+        }
+    }
+
     async addNotification(notificationData) {
     }
 

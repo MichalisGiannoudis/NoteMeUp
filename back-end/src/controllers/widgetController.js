@@ -32,6 +32,34 @@ class WidgetController{
         }
     }
 
+    async updateNotification(req, res) {
+        try {
+            const authHeader = req.headers.authorization; 
+            if (!authHeader || !authHeader.startsWith("Bearer ")) {
+                return res.status(401).json({ error: true, message: "Unauthorized" });  
+            }
+
+            const token = authHeader.replace("Bearer ", "");
+            const user = await this.authenticationService.getCurrentUser(token);
+            if (!user) {
+                return res.status(401).json({ error: true, message: "Unauthorized" });
+            }
+
+            const { notificationId, notificationRead } = req.body;
+            if (!notificationId) {
+                return res.status(400).json({ error: true, message: "Notification ID is required" });
+            }
+
+            await this.notificationService.updateNotification(user._id, notificationId, notificationRead);
+                
+            return res.status(200).json({success: true, message: "Notification updated successfully"});
+        }
+        catch (error) {
+            console.error("POST widget/updateNotifications, Something Went Wrong:", error);
+            return res.status(400).json({ error: true, message: error.message });
+        }
+    }
+
     async addNotification(req, res) {
     }
 

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const notificationSchema = new mongoose.Schema({
   id : {
-    type: String,
+    type: Number,
     required: true,
     unique: true,
     trim: true
