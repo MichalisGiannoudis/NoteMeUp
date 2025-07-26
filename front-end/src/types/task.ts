@@ -5,7 +5,7 @@ export type TaskType = 'todo' | 'meeting' | 'reminder' | 'task' | 'deadline' | '
 export interface Task {
   id: string;
   type: TaskType;
-  message: string;
+  description: string;
   dueDate?: string | Date;
   userId: string;
   targetGroup?: string;

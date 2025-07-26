@@ -35,7 +35,7 @@ export const ExpandableTasksCard: React.FC<ExpandableTasksCardProps> = ({ height
               <div className="flex items-center">
                 <div className="flex-grow">
                   <h4 className="font-bold">{task.type}</h4>
-                  <p className="text-md">{task.message}</p>
+                  <p className="text-md">{task.description}</p>
                 </div>
               </div>
 
